@@ -1,12 +1,21 @@
 const path = require("path");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const CopyPlugin = require("copy-webpack-plugin");
+const {GenerateSW} = require('workbox-webpack-plugin');
 const TerserPlugin = require("terser-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const { outputConfig, copyPluginPatterns, scssConfig, entryConfig, terserPluginConfig } = require("./env.config");
+const {scssConfig, entryConfig, outputConfig, wbConfig} = require("./webpack.config.shared");
 
-module.exports = (env, options) => 
+const terserPluginConfig = {
+    extractComments: false,
+    terserOptions: {
+        compress: {
+            drop_console: true,
+        },
+    }
+};
+
+module.exports = (_, options) => 
 {
     return {
         mode: options.mode,
@@ -47,18 +56,6 @@ module.exports = (env, options) =>
                         emitFile: false,
                     },
                 },
-                {
-                    test: /\.(woff(2)?|eot|ttf|otf|svg|)$/,
-                    type: "javascript/auto",
-                    exclude: /images/,
-                    loader: "file-loader",
-                    options: {
-                        publicPath: "../",
-                        context: path.resolve(__dirname, "src/assets"),
-                        name: "[path][name].[ext]",
-                        emitFile: false,
-                    },
-                },
             ],
         },
         resolve: { extensions: [".tsx", ".ts", ".js"] },
@@ -77,13 +74,13 @@ module.exports = (env, options) =>
         },
         plugins: [
             new CleanWebpackPlugin(),
-            new CopyPlugin(copyPluginPatterns),
             new MiniCssExtractPlugin({ filename: scssConfig.destFileName }),
             new HtmlWebpackPlugin({
-                template: "./src/index.html",
+                template: "./public/index.html",
                 inject: true,
                 minify: false
             }),
+            new GenerateSW(wbConfig)
         ]
     };
 };

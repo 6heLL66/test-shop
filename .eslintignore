@@ -1,0 +1,8 @@
+/node_modules
+/dist
+lint-staged.config.js
+next.config.js
+.eslintrc.js
+/src/shared/api
+/public
+/bin

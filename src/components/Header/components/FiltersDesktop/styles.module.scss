@@ -1,0 +1,28 @@
+@use '../../../../styles/styles' as *;
+
+.container {
+  display: none;
+  gap: 12px;
+
+  @media (min-width: 1024px) {
+    display: flex;
+  }
+}
+
+.filter_view {
+  font-size: 16px;
+  font-weight: 700;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.select {
+  width: 125px;
+
+  @include themed { 
+    color: t('text');
+    border-color: t('text');
+    background: t('background');;
+  }
+}

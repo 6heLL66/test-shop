@@ -1,0 +1,108 @@
+@use '../../styles/styles' as *;
+
+$card-width-mobile-xs: 100%;
+$card-count-mobile-xs: 1;
+
+$card-width-mobile: 160px;
+$card-count-mobile: 2;
+
+$card-width-tablet: 180px;
+$card-count-tablet: 3;
+
+$card-width-desktop: 220px;
+$card-count-desktop: 4;
+
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  @include themed { 
+    background: t('background_secondary')
+  }
+  border-radius: 6px;
+
+  
+  width: #{$card-width-mobile-xs};
+  margin-right: calc((100% - (#{$card-width-mobile-xs} * #{$card-count-mobile-xs})) / (#{$card-count-mobile-xs} - 1));
+  margin-bottom: 20px;
+
+  @media (min-width: 360px) {
+    width: $card-width-mobile;
+    margin-right: calc((100% - (#{$card-width-mobile} * #{$card-count-mobile})) / (#{$card-count-mobile} - 1));
+
+    &:nth-of-type(#{$card-count-mobile}n) {
+      margin-right: 0;
+    }
+  }
+
+  @media (min-width: 580px) {
+    width: $card-width-tablet;
+    margin-right: calc((100% - (#{$card-width-tablet} * #{$card-count-tablet})) / (#{$card-count-tablet} - 1));
+
+    &:nth-of-type(#{$card-count-mobile}n) {
+      margin-right: calc((100% - (#{$card-width-tablet} * #{$card-count-tablet})) / (#{$card-count-tablet} - 1));
+    }
+
+    &:nth-of-type(#{$card-count-tablet}n) {
+      margin-right: 0;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    width: $card-width-desktop;
+    margin-right: calc((100% - (#{$card-width-desktop} * #{$card-count-desktop})) / (#{$card-count-desktop} - 1));
+
+    &:nth-of-type(#{$card-count-mobile}n) {
+      margin-right: calc((100% - (#{$card-width-desktop} * #{$card-count-desktop})) / (#{$card-count-desktop} - 1));
+    }
+
+    &:nth-of-type(#{$card-count-tablet}n) {
+      margin-right: calc((100% - (#{$card-width-desktop} * #{$card-count-desktop})) / (#{$card-count-desktop} - 1));
+    }
+
+    &:nth-of-type(#{$card-count-desktop}n) {
+      margin-right: 0;
+    }
+  }
+}
+
+.product_info {
+  padding: 8px;
+}
+
+.product_title {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.product_price {
+  font-size: 18px;
+  margin: 4px 0;
+  font-weight: 700;
+}
+
+.product_rating {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+
+  span:last-child {
+    position: relative;
+    top: -1px;
+  }
+}
+
+.main_price {
+  font-size: 24px;
+}
+
+.product_image {
+  width: 100%;
+  height: 160px;
+
+  border-top-right-radius: 6px;
+  border-top-left-radius: 6px;
+}

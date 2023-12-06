@@ -1,0 +1,14 @@
+@use '../../styles/styles' as *;
+
+.container {
+  @include themed { 
+    color: t('text');
+    background: t('background')
+  }
+
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+  max-width: 1240px;
+  margin: 0 auto;
+}

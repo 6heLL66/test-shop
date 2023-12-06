@@ -1,0 +1,52 @@
+@use '../../../../styles/styles' as *;
+
+.container {
+  width: 90%;
+  max-width: 800px;
+
+  @include themed { 
+    color: t('text');
+    background: t('background')
+  }
+  padding: 16px;
+  border-radius: 12px;
+}
+
+.image {
+  width: 42%;
+  max-width: 170px;
+  height: 168px;
+}
+
+.top_info {
+  display: flex;
+  width: 100%;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.top_right_info {
+  width: 55%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.info {
+  display: flex;
+  align-items: center;
+}
+
+.info_value {
+  font-weight: 700;
+}
+
+.info_label {
+  min-width: 72px;
+}
+
+.description {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}

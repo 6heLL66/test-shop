@@ -1,17 +1,28 @@
 const path = require('path');
+const fs = require('fs');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CopyPlugin = require('copy-webpack-plugin');
-const { outputConfig, copyPluginPatterns, entryConfig, devServer } = require("./env.config");
+const {entryConfig, outputConfig} = require("./webpack.config.shared");
 
-module.exports = (env, options) => 
+const devServer = {
+    static: {
+        directory: path.join(__dirname, outputConfig.destPath),
+    },
+    historyApiFallback: true,
+    port: 3000,
+    https: {
+        key: fs.readFileSync("cert.key"),
+        cert: fs.readFileSync("cert.crt"),
+        ca: fs.readFileSync("ca.crt"),
+        disableHostCheck: true,
+    },
+};
+
+module.exports = (_, options) => 
 {
     return {
         mode: options.mode,
         entry: entryConfig,
         devServer,
-        // Dev only
-        // Target must be set to web for hmr to work with .browserlist
-        // https://github.com/webpack/webpack-dev-server/issues/2758#issuecomment-710086019
         target: "web",
         module: {
             rules: [
@@ -23,8 +34,6 @@ module.exports = (env, options) =>
                 {
                     test: /\.scss$/,
                     use: [
-                        // We're in dev and want HMR, SCSS is handled in JS
-                        // In production, we want our css as files
                         "style-loader",
                         "css-loader",
                         {
@@ -51,33 +60,20 @@ module.exports = (env, options) =>
                         emitFile: false,
                     },
                 },
-                {
-                    test: /\.(woff(2)?|eot|ttf|otf|svg|)$/,
-                    type: "javascript/auto",
-                    exclude: /images/,
-                    loader: "file-loader",
-                    options: {
-                        publicPath: "../",
-                        context: path.resolve(__dirname, "src/assets"),
-                        name: "[path][name].[ext]",
-                        emitFile: false,
-                    },
-                },
             ],
         },
         resolve: { extensions: [".tsx", ".ts", ".js"] },
         output: {
             filename: "js/[name].bundle.js",
             path: path.resolve(__dirname, outputConfig.destPath),
-            publicPath: "",
+            publicPath: "/",
         },
         plugins: [
             new HtmlWebpackPlugin({
-                template: "./src/index.html",
+                template: "./public/index.html",
                 inject: true,
                 minify: false
             }),
-            new CopyPlugin(copyPluginPatterns),
         ]
     };
 };

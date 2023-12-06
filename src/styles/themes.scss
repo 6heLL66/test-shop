@@ -1,0 +1,47 @@
+@use 'sass:map';
+
+$dark: rgb(45, 45, 45);
+$dark_secondary: rgb(0, 0, 0);
+
+$light: rgb(245, 245, 247);
+$light_secondary: rgb(255, 255, 255);
+
+
+$themes: ( 
+  dark: ( 
+    background: $dark,
+    background_secondary: $dark_secondary,
+    text: $light_secondary,
+  ), 
+  light: ( 
+    background: $light,
+    background_secondary: $light_secondary,
+    text: $dark_secondary,
+  ), 
+);
+
+@mixin themed {
+  @each $theme, $map in $themes { 
+    :global(.theme--#{$theme}) & { 
+      $theme-map: () !global; 
+ 
+      @each $key, $submap in $map { 
+        $value: map.get($map, $key); 
+        $theme-map: map.merge( 
+          $theme-map, 
+          ( 
+            $key: $value, 
+          ) 
+        ) !global; 
+      } 
+      @content; 
+ 
+      $theme-map: null !global; 
+    } 
+  } 
+}
+
+@function t($key, $opacity: 1) { 
+  $colorValue: map-get($theme-map, $key);
+  @return rgba($colorValue, $opacity);
+}
