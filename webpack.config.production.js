@@ -62,7 +62,7 @@ module.exports = (_, options) =>
         output: {
             filename: "js/[name].bundle.js",
             path: path.resolve(__dirname, outputConfig.destPath),
-            publicPath: "",
+            publicPath: "/",
         },
         optimization: {
             minimizer: [
